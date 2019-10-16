@@ -2,7 +2,6 @@
     ==========================================================
       ASSIGNMENT 5 : Array Operations & Operator Overloading
     ==========================================================
-
     Code by: SAHIL HADKE
     Roll No: 17
     Batch: S1
@@ -16,91 +15,78 @@
 */
 
 #include<iostream>
+#define max 10
 using namespace std;
 
-class CppArray
+class cppArray
 {
-    int i,j,n;
 public:
-    int arr[100];
-    void getData();
-    void printData();
-    void getRange();
-    void SortArray();
+    int arr[max], len;
 
-    // = Operator Overloading
-    CppArray operator=(CppArray &obj)
+    cppArray()
     {
-	CppArray _obj;
-	_obj.arr[100] = this->arr[100];
-	return _obj;
+        len = 0;
     }
-};
 
-void CppArray::SortArray()
-{
-    for(i = n-1; i>=0; i--)
+    cppArray(const cppArray &obj) //copy constructor
     {
-        for(j = 0; j <= i; j++)
+        len = obj.len;
+        for(int i = 0; i < obj.len; i++)
         {
-	          if(arr[j] > arr[j+1])
-            {
-                //Swapping.
-	              int temp = 0;
-	    	        temp = arr[j];
-		            arr[j] = arr[j+1];
-		            arr[j+1] = temp;
-	          }
+            arr[i] = obj.arr[i];
         }
     }
-    printData(); //After sorting array it prints the sorted array using this function.
-}
 
-//For User Input.
-void CppArray::getData()
-{
-    cout<<"Enter the size of array: ";
-    cin>>n;
-
-    for(i = 0; i < n; i++)
+    int Range()
     {
-	cout<<"Enter element "<<i+1<<": ";
-   	cin>>arr[i];
+        int min = arr[0], _max = arr[0];
+
+        for(int i = 0; i < len; i++)
+        {
+            if(arr[i] < min)
+                min = arr[i];
+            if(arr[i] > _max)
+                _max = arr[i];
+        }
+
+        return _max-min;
     }
+
+    friend istream & operator >>(istream &i, cppArray &obj);
+    friend ostream & operator <<(ostream &o, cppArray &obj);
+};
+
+istream & operator >>(istream &i, cppArray &obj)
+{
+    int n;
+    cout<<"Enter the number of elements :";
+    i>>n;
+    obj.len = n;
+    for(int i = 0; i < n; i++)
+        cin>>obj.arr[i];
+
+    return i;
 }
 
-//Prints the array
-void CppArray::printData()
+ostream & operator <<(ostream &o, cppArray &obj)
 {
-    cout<<"The sorted array is: {";
-    for(i = 0; i < n; i++)
+    for(int i = 0; i < obj.len; i++)
     {
-   	    cout<<arr[i]<<" ";
+        o<<obj.arr[i]<<" ";
     }
-    cout<<"}\n";
-}
-
-//Range of array is maximum number in array - minimum number in array.
-void CppArray::getRange()
-{
-    cout<<"\nThe maximum number is: "<<arr[n-1]<<"\nThe minimum number is :"<<arr[0];
-    cout<<"\nThe range is: "<<arr[n-1] - arr[0]<<endl;
+    o<<endl;
+    return o;
 }
 
 int main()
 {
-    CppArray cp1;
-    cp1.getData();
-    cp1.SortArray();
-    cp1.getRange();
+    cppArray a1;
+    cin>>a1;
+    cout<<a1;
 
-    //Copying the array of cp1 to array of cp2 by operator overloading.
+    cppArray a2 = a1;
+    cout<<a2;
 
-    CppArray cp2 = cp1;
-
-    //Printing the array of cp2.
-    cout<<"\nFollowing is the array of cp2\n";
-    cp2.printData();
-
+    cout<<a2.Range();
     return 0;
 }
