@@ -23,7 +23,7 @@ int main()
     fstream f;
 
     string temp; //used to store temp string while displaying records
-    char temp_name[10]; //used to store temp name switch case 3
+    char temp_name[10], temp_ph[10]; //used to store temp name switch case 3
 
     int choice = 1, while_counter = 1, found1;
     phonebook p;
@@ -65,38 +65,40 @@ int main()
                 cin>>temp_name;
                 f.open("a.txt", ios_base::in);
 
-                found1 = 1;
                 while(f)
                 {
+                    found1 = 1;
                     temp = "";
                     getline(f, temp);
                     for(int i = 0; i < strlen(temp_name); i++)
                     {
                         if(temp_name[i] != temp[i])
                         {
-                            found1 = 0;
                             break;
                         }
-                    }
-                    if(found1 == 1)
-                    {
-                        cout<<"FOUND :"<<temp<<endl;
-                        break;
-                    }
-                    else if(found1 == 0)
-                    {
-                        if(!f) //eof returs true if no more data is in file
+                        else
                         {
-                            cout<<"NOT FOUND!"<<endl;
+                            found1 = 3;
+                            cout<<endl<<"FOUND :"<<temp<<endl;
                             break;
                         }
                     }
+                    if(found1 == 3)
+                        break;
+                }
+                if(found1 != 3)
+                {
+                    cout<<"NOT FOUND"<<endl;
+                    found1 = 1;
                 }
 
                 f.close();
                 break;
 
             case 4: //Find Name
+                cout<<"Enter the number to search:";
+                cin>>temp_name;
+
                 break;
 
             case 5: //Update Telephone
