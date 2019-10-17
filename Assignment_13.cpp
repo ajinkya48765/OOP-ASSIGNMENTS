@@ -6,7 +6,8 @@ using namespace std;
 class phonebook
 {
 public:
-    char name[10], ph[10];
+    char name[20];
+    long double ph;
 
     void getData()
     {
@@ -15,27 +16,31 @@ public:
         cout<<"Enter Phone Number :";
         cin>>ph;
     }
+
+    void printData()
+    {
+        cout<<name<<" "<<ph<<endl;
+    }
 };
 
 
 int main()
 {
+
     fstream f;
 
-    string temp; //used to store temp string while displaying records
-    char temp_name[10], temp_ph[10]; //used to store temp name switch case 3
-
-    int choice = 1, while_counter = 1, found1;
+    long double temp_ph;
+    char temp_name[20];
+    int choice = 1, while_counter = 1, trial1, trial2;
     phonebook p;
+    phonebook p1;
 
     while(while_counter)
     {
         cout<<"\n*****PHONEBOOK*****"<<endl;
         cout<<"1. Add to record."<<endl;
-        cout<<"2. Display Records."<<endl;
-        cout<<"3. Find Number."<<endl;
-        cout<<"4. Find Name."<<endl;
-        cout<<"5. Update telephone number."<<endl;
+        cout<<"2. Find Number."<<endl;
+        cout<<"3. Find Name."<<endl;
         cout<<"6. Exit."<<endl;
         cout<<"Enter choice :";
         cin>>choice;
@@ -44,64 +49,52 @@ int main()
         switch(choice)
         {
             case 1: //Add New Record
-                f.open("a.txt", ios_base::app);
+                f.open("a.dat", ios_base::app | ios_base::binary);
                 p.getData();
-                f<<p.name<<" "<<p.ph<<endl;
+                f.write((char*)&p, sizeof(p));
                 f.close();
                 break;
 
-            case 2: //Display Record
-                f.open("a.txt", ios_base::in);
-                while(f)
-                {
-                    getline(f, temp);
-                    cout<<temp<<endl;
-                }
-                f.close();
-                break;
+            case 2: //Find Number
+                f.open("a.dat", ios_base::in | ios_base::binary);
+                f.seekg(0);
+                cout<<"Enter ph to search:";
+                cin>>temp_ph;
 
-            case 3: //Find Number
-                cout<<"Enter the name to search:";
-                cin>>temp_name;
-                f.open("a.txt", ios_base::in);
-
-                while(f)
+                while(!f.eof())
                 {
-                    found1 = 1;
-                    temp = "";
-                    getline(f, temp);
-                    for(int i = 0; i < strlen(temp_name); i++)
+                    f.read((char*)&p1, sizeof(p1));
+                    trial1 = p1.ph/10000;
+                    trial2 = temp_ph/10000;
+                    if(trial1 == trial2)
                     {
-                        if(temp_name[i] != temp[i])
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            found1 = 3;
-                            cout<<endl<<"FOUND :"<<temp<<endl;
-                            break;
-                        }
-                    }
-                    if(found1 == 3)
+                        cout<<"RECORD FOUND"<<endl;
+                        cout<<"Name :"<<p1.name;
+                        cout<<" Ph :"<<p1.ph;
                         break;
-                }
-                if(found1 != 3)
-                {
-                    cout<<"NOT FOUND"<<endl;
-                    found1 = 1;
+                    }
+
                 }
 
                 f.close();
                 break;
 
-            case 4: //Find Name
-                cout<<"Enter the number to search:";
+            case 3: //Find Name
+                f.open("a.dat", ios_base::in | ios_base::binary);
+                cout<<"Enter the name you want to search:";
                 cin>>temp_name;
 
-                break;
-
-            case 5: //Update Telephone
+                while(!f.eof())
+                {
+                    f.read((char*)&p1, sizeof(p1));
+                    if(strcmp(p1.name, temp_name) == 0)
+                    {
+                        cout<<"RECORD FOUND"<<endl;
+                        cout<<"Name :"<<p1.name;
+                        cout<<" Ph :"<<p1.ph<<endl;
+                        break;
+                    }
+                }
                 break;
 
             case 6: //Exit
