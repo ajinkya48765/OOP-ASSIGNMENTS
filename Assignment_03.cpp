@@ -5,8 +5,7 @@ class Calc
 {
     float num1, num2;
 public:
-    Calc(float a, float b)
-    {
+    Calc(float a, float b){
         num1 = a;
         num2 = b;
     }
