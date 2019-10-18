@@ -49,7 +49,7 @@ void record::sorn()
         i++;
         while(i != name.end())
         {
-            if(*i1 < *i)
+            if(*i1 > *i)
             {
 
                 //swap name
