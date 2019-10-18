@@ -1,6 +1,6 @@
 /*
     ==========================================================
-      ASSIGNMENT 5 : Array Operations & Operator Overloading
+      ASSIGNMENT 5 : Array Operations & Operator Overloading.
     ==========================================================
     Code by: SAHIL HADKE
     Roll No: 17
