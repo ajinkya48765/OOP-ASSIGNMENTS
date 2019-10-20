@@ -15,78 +15,100 @@
 */
 
 #include<iostream>
-#define max 10
+#include<math.h>
 using namespace std;
 
-class cppArray
+class array
 {
-public:
-    int arr[max], len;
-
-    cppArray()
-    {
-        len = 0;
-    }
-
-    cppArray(const cppArray &obj) //copy constructor
-    {
-        len = obj.len;
-        for(int i = 0; i < obj.len; i++)
-        {
-            arr[i] = obj.arr[i];
-        }
-    }
-
-    int Range()
-    {
-        int min = arr[0], _max = arr[0];
-
-        for(int i = 0; i < len; i++)
-        {
-            if(arr[i] < min)
-                min = arr[i];
-            if(arr[i] > _max)
-                _max = arr[i];
-        }
-
-        return _max-min;
-    }
-
-    friend istream & operator >>(istream &i, cppArray &obj);
-    friend ostream & operator <<(ostream &o, cppArray &obj);
+     int a[10],b[10],i,j,temp,n;
+     
+    public:
+            void accept();
+            void display();
+            void range();
+            void sort();
+            void exchange();
+            int size();
 };
 
-istream & operator >>(istream &i, cppArray &obj)
+void array::accept()
 {
-    int n;
-    cout<<"Enter the number of elements :";
-    i>>n;
-    obj.len = n;
-    for(int i = 0; i < n; i++)
-        cin>>obj.arr[i];
-
-    return i;
+    cout<<"How many Elements you want to insert into the array=\n";
+    cin>>n;
+    cout<<"Enter the array Elements=\n";
+    for(i=0;i<n;i++)
+       {
+            cout<<"a["<<i<<"]=";
+            cin>>a[i];
+        }
 }
 
-ostream & operator <<(ostream &o, cppArray &obj)
+void array::display()
 {
-    for(int i = 0; i < obj.len; i++)
-    {
-        o<<obj.arr[i]<<" ";
-    }
-    o<<endl;
-    return o;
+      cout<<"For Enter Array Elements are=\n";
+       for(i=0;i<n;i++)
+        {
+            cout<<"a["<<i<<"]="<<a[i]<<"\n";
+        }
+}
+ 
+void array::range()
+{
+      cout<<"The range of array is from"<<a[0]<<"to"<<a[n-1]<<endl;
+}
+
+void array::sort()
+{
+      for(i=0;i<n;i++)
+      {
+           for(j=0;j<n-1;j++)
+           {
+                if(a[j]>a[j+1])
+                {    
+                     temp=a[j];
+                     a[j]=a[j+1];
+                     a[j+1]=temp;
+                }
+           }
+      }
+
+    cout<<"\nThe Elements of Array After sorting";
+     for(i=0;i<n;i++)
+      {
+          cout<<"a["<<i<<"]="<<a[i]<<"\n";
+      }
+}
+
+void array::exchange()
+{
+     for(i=0;i<n;i++)
+      {
+           b[i]=a[i];
+      }
+
+    cout<<"\nThe array Elements Array exchanging=";
+    for(i=0;i<n;i++)
+      {
+         cout<<"b["<<i<<"]="<<b[i]<<"\n";
+      }
+}    
+
+int array::size()
+{
+     return n;
 }
 
 int main()
 {
-    cppArray a1;
-    cin>>a1;
-    cout<<a1;
+      int x;
+      array obj;
+      obj.accept();
+      obj.display();
+      obj.range();
+      obj.sort();
+      obj.exchange();
+      x=obj.size();
 
-    cppArray a2 = a1;
-    cout<<a2;
-
-    cout<<a2.Range();
-    return 0;
+  cout<<"\nThe size of Array="<<x;
+  return 0;
 }
