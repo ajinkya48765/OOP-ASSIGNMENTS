@@ -1,48 +1,47 @@
-#include<iostream>
-#include<fstream>
+#include <cstdlib>
+ #include <fstream>
+ #include <iostream>
 using namespace std;
 
-int main()
-{
+int main ()
+ {
+char name[80];
+cout<<"Enter name of file to create\n";
+cin>>name;
 
+ofstream fout;
 
-    ofstream file_name;
-    file_name.open("a.txt");
+fout.open(name);
+if(!fout)
+ {
+cout<<"Error opening file\n";
+exit(1);
+ }
+cout<< "Writing to the file" <<endl;
+cout<< "Enter contents for file end with ctrl+D";
+string data;
+while(getline(cin,data))
+ {
+if(data == "^D")
+break;
+fout<< data <<endl;
+ }
+fout.close();
 
-    if(!file_name) //file open condition
-    {
-        cout<<"FILE NOT OPENED"<<endl;
-        return 0;
-    }
+ifstream fin;
 
-    string name, arr1;
-    cout<<"Enter name :";
-
-    while(getline(cin, name))
-    {
-        if(name == "D")
-            break;
-        file_name<<name<<endl;
-    }
-
-    file_name.close();
-
-    cout<<"OPERATION COMPLETED"<<endl;
-
-
-
-
-    cout<<"READING FROM FILE"<<endl;
-
-    ifstream file_name2("a.txt");
-
-    while(file_name2) //Till end of file
-    {
-        getline(file_name2, name);
-        cout<<name<<endl;
-    }
-
-    file_name2.close();
-
-    return 0;
-}
+fin.open(name);
+if(!fin)
+ {
+cout<<"Error opening file\n";
+exit(1);
+ }
+cout<< "Reading from the file" <<endl;
+while(fin)
+ {
+getline(fin,data);
+cout<< data <<endl;
+ }
+fin.close();
+return 0;
+ }
