@@ -21,131 +21,147 @@ Implement C++ program for the system.
 */
 
 #include<iostream>
-#define max 5
-using namespace std;
+#include<string.h>
+#include<stdlib.h>
 
+using namespace std;
 class book
 {
-public:
-    string title, author, publisher;
-    int stock, price;
 
-    book()
-    {
-        getData();
-    }
-
-    void Display();
-    void getData();
-    void Buy(int n);
-    int Check(string t, string a, string p, int s);
+ char author[20]; 
+ char title[20];
+ char publisher[20];
+ double price;
+ int stock;
+   public:
+     book();    
+   void insertdata();
+   void display();
+   int search(char[],char[]);
+   void nocopies(int);     
 };
+  book::book()
+  {
+    char *author=new char[50];
+    char * title=new char[50];
+    char *publisher=new char[50];
+    price=0;
+    stock=0;
+   }
+void book::insertdata()
+         {
+  cout<<"\n Enter the name of Book:";
+  cin>>title;
+  cout<<"\n Enter The Name Of Author:";
+  cin>>author;
+  cout<<"\n Enter The name of Publisher:";
+  cin>>publisher;
+  cout<<"\n Enter the Price of book:";
+  cin>>price;
+  cout<<"\n Enter Stock of book:";
+  cin>>stock;
+ }
 
-book *books[max];
 
-void book::getData()
-{
-    cout<<"Enter the title of book : ";
-    getline(cin, title);
-
-    cout<<"Enter the author of book : ";
-    getline(cin, author);
-
-    cout<<"Enter the publisher of the book : ";
-    getline(cin, publisher);
-
-    cout<<"Enter the price of the book : ";
-    cin>>price;
-
-    cout<<"Enter stock : ";
-    cin>>stock;
-}
-
-int book::Check(string t, string a, string p, int s)
-{
-    if(t != title || a != author || p != publisher || s > stock)
-        return 0;
-    return 1;
-}
-
-void book::Display()
-{
-    cout<<"Title : "<<title<<endl;
-    cout<<"Publisher : "<<publisher<<endl;
-    cout<<"Author : "<<author<<endl;
-    cout<<"Price : "<<price<<endl;
-    cout<<"Stock : "<<stock<<endl;
-}
-
-void book::Buy(int n)
-{
-    if(n > stock)
-    {
-        cout<<"NO STOCK"<<endl;
-        cin.ignore();
-        return;
-    }
-    stock = stock-n;
-    cout<<"Total Price = "<<price*n<<endl;
-    cout<<n<<" book(s) brought"<<endl;
-}
-
-void RequestBook()
-{
-    string title, author, publisher;
-    int stock, flag = 0;
-
-    cout<<"Enter the title of book : ";
-    getline(cin, title);
-
-    cout<<"Enter the author of book : ";
-    getline(cin, author);
-
-    cout<<"Enter the publisher of the book : ";
-    getline(cin, publisher);
-
-    cout<<"Enter stock : ";
-    cin>>stock;
-
-    for(int i = 0; i < max; i++)
-    {
-        if(books[i]->Check(title, author, publisher, stock))
-        {
-            flag = 1;
-            books[i]->Buy(stock);
-            break;
+  void book::display()
+ {
+ cout<<"\n "<<title<<"\t\t "<<author<<"\t\t  "<<publisher<<" \t\t\t "<<price<<"\t "<<stock;
         }
-    }
-    if(!flag)
-        cout<<"NO BOOK FOUND"<<endl;
+  int book::search(char t[],char a[])
+  {
+      if(strcmp(title,t)&&(strcmp(author,a)))
+ {
+ return 0;
+ }
+ else
+ {
+ return 1;
+ }
+  }
+
+ void book::nocopies(int num)
+{
+if(stock>=num)
+{
+cout<<"\n Title is avilable";
+cout<<"\n Cost of"<<num<<"Books is Rs."<<(price*num);
+}
+else
+{
+cout<<"\n Required copies not in stock";
+}
 }
 int main()
 {
-    int i = 0,n = 1, m = 1;
-
-    while(n)
+ int ch,n,i,flag=0,copies,key=0;
+          book b[100];
+          char bname[50];
+          char key_title[50],key_author[50];
+   do
     {
-        cout<<"DETAILS OF BOOK YOU WANT TO ADD TO THE STORE"<<endl;
-        books[i] = new book;
-        i++;
-
-        cout<<"Press\n1 to add more books\n0 to buy book : ";
-        cin>>n;
-
-        cin.ignore();
-    }
-
-    while(m)
+ cout<<"\n************Book Store*******************";
+ cout<<"\n 1.Insert Details of book \n 2.Display \n 3.search \n 4.exit";
+ cout<<"\n Enter Your Choice:";
+ cin>>ch;
+ switch(ch)
+  {
+      case 1:
+                    cout<<"\n How many books data u want to enter";
+                    cin>>n;
+                    for(i=0;i<n;i++)
+                      {
+                       b[i].insertdata();
+   }
+                     break;
+     case 2:
+                       cout<<"\n"<<"TITLE"<<"\t \t "<<"AUTHOR"<<"\t\t"<<"PUBLISHER"<<"\t\t"<<"PRICE"<<"\t "<<"STOCK";
+                        for(i=0;i<n;i++)
     {
-        cout<<"DETAILS OF BOOK YOU WANT TO BUY FROM THE STORE"<<endl;
-
-        RequestBook();
-
-        cout<<"\tPress\n1 to buy more books\n0 to exit : ";
-        cin>>m;
-        cin.ignore();
+                        cout<<"\n";
+   
+         b[i].display();   
+     }
+   
+                        break;
+                    
+   case 3:
+                          cout<<"\n Enter title of required book";
+                           cin>>key_title;
+                           cout<<"\n Enter author of required book";
+                            cin>>key_author;
+                             
+                            for(i=0;i<n;i++)
+                          {
+                              if(b[i].search(key_title,key_author))
+                               {
+                                  flag=1;
+ cout<<"\n"<<"TITLE"<<"\t \t "<<"AUTHOR"<<"\t\t"<<"PUBLISHER"<<"\t\t"<<"PRICE"<<"\t "<<"STOCK";
+                                  b[i].display();                        
+    //break;
+    key=i;
+            }
     }
-
-    return 0;
-
-}
+   if(flag==1)                          
+    cout<<"\n Book is available";
+   else
+ {
+     cout<<"\n book is Not available";
+        break;
+ }        
+              if(flag==1)
+                      {
+                      cout<<"\n Please enter the required number of copies of the book";
+                       cin>>copies;
+                      b[key].nocopies(copies);
+                     }
+                   
+                     break;
+                case 4: exit(EXIT_SUCCESS);
+   break;
+  default :
+                    cout<<"\n Wrong Choice";
+                       break;
+ }   
+   }while(ch!=5);
+ return 0;
+} 
